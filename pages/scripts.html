@@ -161,7 +161,7 @@
         }
 
         /* --- 代码内容区域 (包含折叠动画) --- */
-        .card-content {
+        。card-content {
             background-color: var(--code-bg);
             max-height: 1000px; /* 足够大的高度用于展开 */
             overflow: hidden;
@@ -170,25 +170,25 @@
         }
 
         /* 折叠状态 */
-        .code-card.collapsed .card-content {
+        。code-card。collapsed 。card-content {
             max-height: 0;
             border-top: none;
         }
         
         /* 折叠时去掉头部的底边框，显得更整洁 */
-        .code-card.collapsed .card-header {
+        。code-card.collapsed .card-header {
             border-bottom: none;
             transition: border 0.4s; /* 延迟一点看起来更自然 */
         }
-        .code-card:not(.collapsed) .card-header {
+        .code-card:not(。collapsed) 。card-header {
              border-bottom: 2px solid var(--border-color);
         }
 
         /* 箭头旋转动画 */
-        .toggle-icon {
+        。toggle-icon {
             transition: transform 0.3s;
         }
-        .code-card.collapsed .toggle-icon {
+        。code-card.collapsed .toggle-icon {
             transform: rotate(-90deg);
         }
 
@@ -219,18 +219,18 @@
 
         /* --- 强制黑白高亮样式 --- */
         /* 关键字粗体 */
-        .token.keyword, .token.important, .token.bold {
+        。token.keyword, .token.important, .token.bold {
             color: var(--token-keyword) !important;
             font-weight: var(--token-weight) !important;
             background: none !important;
         }
         /* 字符串 */
-        .token.string, .token.char {
+        。token.string, .token.char {
             color: var(--token-string) !important;
             background: none !important;
         }
         /* 注释 (斜体+灰色) */
-        .token.comment, .token.prolog, .token.doctype, .token.cdata {
+        。token.comment, .token.prolog, .token.doctype, .token.cdata {
             color: var(--token-comment) !important;
             font-style: italic;
         }
@@ -239,13 +239,13 @@
             color: var(--text-main) !important;
         }
         /* 函数名、类名 */
-        .token.function, .token.class-name {
+        。token.function, .token.class-name {
             color: var(--text-main) !important;
             text-decoration: underline; /* 用下划线区分函数 */
             text-decoration-color: var(--text-muted);
         }
         /* 标点符号 */
-        .token.punctuation {
+        。token.punctuation {
             color: var(--text-muted) !important;
         }
         /* 操作符 */
@@ -273,8 +273,7 @@
 <div class="container">
     <h1>我的脚本</h1>
 
-    <!-- 示例代码块 1: Python -->
-    <div class="code-card">
+    <div class="code-card collapsed">
         <div class="card-header">
             <div class="file-info">
                 <span class="lang-badge">JavaScript</span>
@@ -294,7 +293,7 @@
         </div>
         <div class="card-content">
             <pre><code class="language-javascript">
-              // ==UserScript==
+// ==UserScript==
 // @name         终极全局字体替换 (全字重+语言感知) - Merged v22 (Aggressive Latin Boost)
 // @namespace    http://tampermonkey.net/
 // @version      2025.11.21.aggressive-boost
@@ -668,7 +667,6 @@ ${Array.from(EXCLUSIONS.MONO_TAGS).join(', ')} {
         </div>
     </div>
 
-    <!-- 示例代码块 2: HTML (默认折叠) -->
     <div class="code-card collapsed">
         <div class="card-header">
             <div class="file-info">
@@ -946,8 +944,7 @@ ${Array.from(EXCLUSIONS.MONO_TAGS).join(', ')} {
         </div>
     </div>
 
-    <!-- 示例代码块 3: JavaScript -->
-    <div class="code-card">
+    <div class="code-card collapsed">
         <div class="card-header">
             <div class="file-info">
                 <span class="lang-badge">JavaScript</span>
@@ -965,7 +962,7 @@ ${Array.from(EXCLUSIONS.MONO_TAGS).join(', ')} {
         </div>
         <div class="card-content">
             <pre><code class="language-javascript">
-              // ==UserScript==
+// ==UserScript==
 // @name Universal Font Replacement v13.3 - (v9.7 Font Injection) - [Modified v4-MapleMono]
 // @namespace http://tampermonkey.net/
 // @version 7.0
