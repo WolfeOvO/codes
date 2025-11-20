@@ -5,4 +5,4 @@
 
 [心理问卷](pages/psy.html)
 
-[我的脚本](pages/script.html)
+[我的脚本](pages/scripts.html)
