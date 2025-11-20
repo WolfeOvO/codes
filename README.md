@@ -4,3 +4,5 @@
 [IMYAI维护提示页](pages/imyai.html)
 
 [心理问卷](pages/psy.html)
+
+[我的脚本](pages/script.html)
