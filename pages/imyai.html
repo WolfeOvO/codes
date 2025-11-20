@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>网站维护升级中</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Montserrat', sans-serif;
+          background: linear-gradient(135deg, #1a1a2e, #16213e);
+          color: #fff;
+          height: 100vh;
+          overflow: hidden;
+          position: relative;
+      }
+
+      #particles-js {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+      }
+
+      .maintenance-container {
+          position: relative;
+          z-index: 2;
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 2rem;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+      }
+
+      .logo {
+          margin-bottom: 2rem;
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: #fff;
+          text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+      }
+
+      h1 {
+          font-size: 3rem;
+          margin-bottom: 1.5rem;
+          background: linear-gradient(90deg, #00dbde, #fc00ff);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          animation: gradientShift 3s ease infinite;
+          background-size: 200% 200%;
+      }
+
+      @keyframes gradientShift {
+          0% {
+              background-position: 0% 50%;
+          }
+          50% {
+              background-position: 100% 50%;
+          }
+          100% {
+              background-position: 0% 50%;
+          }
+      }
+
+      p {
+          font-size: 1.2rem;
+          margin-bottom: 2rem;
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.8);
+      }
+
+      。progress-container {
+          width: 100%;
+          max-width: 500px;
+          background: rgba(255, 255， 255， 0.1);
+          border-radius: 10px;
+          height: 10px;
+          margin: 2rem 0;
+          overflow: hidden;
+      }
+
+      。progress-bar {
+          height: 100%;
+          width: 65%;
+          background: linear-gradient(90deg, #00dbde, #fc00ff);
+          border-radius: 10px;
+          animation: progressAnimation 2s ease-in-out infinite;
+          background-size: 200% 200%;
+      }
+
+      @keyframes progressAnimation {
+          0% {
+              background-position: 0% 50%;
+              width: 65%;
+          }
+          50% {
+              background-position: 100% 50%;
+              width: 75%;
+          }
+          100% {
+              background-position: 0% 50%;
+              width: 65%;
+          }
+      }
+
+      。countdown {
+          display: flex;
+          justify-content: center;
+          gap: 1.5rem;
+          margin: 2rem 0;
+      }
+
+      .countdown-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+
+      。countdown-value {
+          font-size: 2.5rem;
+          font-weight: 700;
+          background: linear-gradient(90deg, #00dbde, #fc00ff);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+      }
+
+      。countdown-label {
+          font-size: 0.8rem;
+          text-transform: uppercase;
+          color: rgba(255， 255， 255, 0.6);
+      }
+
+      。social-links {
+          display: flex;
+          gap: 1.5rem;
+          margin-top: 2rem;
+      }
+
+      .social-link {
+          color: #fff;
+          font-size: 1.5rem;
+          transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      .social-link:hover {
+          transform: translateY(-5px);
+          color: #00dbde;
+      }
+
+      .rocket {
+          position: absolute;
+          bottom: -100px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 3rem;
+          animation: rocketLaunch 8s ease-in-out infinite;
+      }
+
+      @keyframes rocketLaunch {
+          0% {
+              transform: translateX(-50%) translateY(0) rotate(0deg);
+              opacity: 0;
+          }
+          20% {
+              opacity: 1;
+          }
+          50% {
+              transform: translateX(-50%) translateY(-300px) rotate(0deg);
+          }
+          70% {
+              transform: translateX(-50%) translateY(-400px) rotate(5deg);
+          }
+          100% {
+              transform: translateX(-50%) translateY(-1000px) rotate(10deg);
+              opacity: 0;
+          }
+      }
+
+      .loader {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 2rem 0;
+      }
+
+      .loader-dot {
+          width: 15px;
+          height: 15px;
+          margin: 0 5px;
+          background: linear-gradient(90deg, #00dbde, #fc00ff);
+          border-radius: 50%;
+          animation: bounce 1.5s infinite ease-in-out;
+      }
+
+      .loader-dot:nth-child(1) {
+          animation-delay: 0s;
+      }
+
+      。loader-dot:nth-child(2) {
+          animation-delay: 0.2s;
+      }
+
+      。loader-dot:nth-child(3) {
+          animation-delay: 0.4s;
+      }
+
+      @keyframes bounce {
+          0%， 100% {
+              transform: translateY(0);
+          }
+          50% {
+              transform: translateY(-20px);
+          }
+      }
+
+      @media (max-width: 768px) {
+          h1 {
+              font-size: 2rem;
+          }
+
+          p {
+              font-size: 1rem;
+          }
+
+          。countdown {
+              gap: 1rem;
+          }
+
+          。countdown-value {
+              font-size: 1.8rem;
+          }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="particles-js"></div>
+
+    <div class="maintenance-container">
+      <div class="logo">IMYAI</div>
+      <h1>网站清理加速进行中</h1>
+      <p>
+        新域名已经准备就绪，但网站运行速度仍然存在问题，我们正在对网站做最后的调整，以提供更好的用户体验。请稍后再回来查看。
+      </p>
+
+      <div class="progress-container">
+        <div class="progress-bar"></div>
+      </div>
+
+      <div class="loader">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
+
+      <p>升级加速需要时间，还请您耐心等待。</p>
+
+      <div class="rocket">🚀</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+      // 粒子动画配置
+      particlesJS("particles-js"， {
+          "particles": {
+              "number": {
+                  "value": 80,
+                  "density": {
+                      "enable": true，
+                      "value_area": 800
+                  }
+              }，
+              "color": {
+                  "value": "#ffffff"
+              }，
+              "shape": {
+                  "type": "circle"，
+                  "stroke": {
+                      "width": 0，
+                      "color": "#000000"
+                  },
+                  "polygon": {
+                      "nb_sides": 5
+                  }
+              },
+              "opacity": {
+                  "value": 0.5,
+                  "random": true,
+                  "anim": {
+                      "enable": true,
+                      "speed": 1,
+                      "opacity_min": 0.1,
+                      "sync": false
+                  }
+              }，
+              "size": {
+                  "value": 3，
+                  "random": true,
+                  "anim": {
+                      "enable": true，
+                      "speed": 2,
+                      "size_min": 0.1,
+                      "sync": false
+                  }
+              }，
+              "line_linked": {
+                  "enable": true,
+                  "distance": 150，
+                  "color": "#ffffff"，
+                  "opacity": 0.4，
+                  "width": 1
+              }，
+              "move": {
+                  "enable": true,
+                  "speed": 2,
+                  "direction": "none",
+                  "random": true,
+                  "straight": false,
+                  "out_mode": "out"，
+                  "bounce": false,
+                  "attract": {
+                      "enable": true，
+                      "rotateX": 600，
+                      "rotateY": 1200
+                  }
+              }
+          }，
+          "interactivity": {
+              "detect_on": "canvas",
+              "events": {
+                  "onhover": {
+                      "enable": true，
+                      "mode": "grab"
+                  }，
+                  "onclick": {
+                      "enable": true，
+                      "mode": "push"
+                  }，
+                  "resize": true
+              }，
+              "modes": {
+                  "grab": {
+                      "distance": 140,
+                      "line_linked": {
+                          "opacity": 1
+                      }
+                  }，
+                  "bubble": {
+                      "distance": 400,
+                      "size": 40,
+                      "duration": 2，
+                      "opacity": 8,
+                      "speed": 3
+                  },
+                  "repulse": {
+                      "distance": 200,
+                      "duration": 0.4
+                  },
+                  "push": {
+                      "particles_nb": 4
+                  },
+                  "remove": {
+                      "particles_nb": 2
+                  }
+              }
+          },
+          "retina_detect": true
+      });
+    </script>
+  </body>
+</html>
