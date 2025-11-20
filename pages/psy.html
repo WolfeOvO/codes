@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>综合心理健康评估问卷</title>
+    <!-- 引入阿里巴巴普惠体 -->
+    <link rel="stylesheet" href="https://gw.alipayobjects.com/os/public/common-fonts/AlibabaPuHuiTi/AlibabaPuHuiTi-Light/index.css" />
+    <link rel="stylesheet" href="https://gw.alipayobjects.com/os/public/common-fonts/AlibabaPuHuiTi/AlibabaPuHuiTi-Regular/index.css" />
+    <link rel="stylesheet" href="https://gw.alipayobjects.com/os/public/common-fonts/AlibabaPuHuiTi/AlibabaPuHuiTi-Medium/index.css" />
+    <link rel="stylesheet" href="https://gw.alipayobjects.com/os/public/common-fonts/AlibabaPuHuiTi/AlibabaPuHuiTi-Bold/index.css" />
+    <style>
+        :root {
+            --klein-blue: #002FA7;
+            --light-blue: #4A7BEE; 
+            --pale-blue: #E8F0FE; 
+            --white: #FFFFFF;
+            --text-dark: #212529; 
+            --text-medium: #495057;
+            --text-light: #6c757d; /* 用于描述等辅助文字 */
+            --border-color: #DEE2E6; 
+            --success-bg: #E6F7F0; --success-text: #00642E; --success-border: #B3E6D0;
+            --mild-bg: #FFF8E1; --mild-text: #795508; --mild-border: #FFEDB3;
+            --moderate-bg: #FFEFE6; --moderate-text: #7A2E0B; --moderate-border: #FFD9C2;
+            --severe-bg: #FDEDED; --severe-text: #721C24; --severe-border: #F5C6CB;
+
+            --font-family-alibaba: "AlibabaPuHuiTi_2_55_Regular", "Alibaba PuHuiTi 2.0 55 Regular", sans-serif;
+            --font-family-alibaba-light: "AlibabaPuHuiTi_2_45_Light", "Alibaba PuHuiTi 2.0 45 Light", sans-serif;
+            --font-family-alibaba-medium: "AlibabaPuHuiTi_2_65_Medium", "Alibaba PuHuiTi 2.0 65 Medium", sans-serif;
+            --font-family-alibaba-bold: "AlibabaPuHuiTi_2_85_Bold", "Alibaba PuHuiTi 2.0 85 Bold", sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family-alibaba);
+            font-weight: 400; 
+            line-height: 1.75; /* 进一步增加行高 */
+            margin: 0;
+            padding: 0;
+            background-color: #F8F9FA; /* 更柔和的背景色 */
+            color: var(--text-dark);
+            padding-top: 70px; 
+            font-size: 16px; 
+        }
+
+        .fixed-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, var(--klein-blue), var(--light-blue));
+            color: var(--white);
+            text-align: center;
+            padding: 15px 0; 
+            font-size: 1.05em;
+            font-family: var(--font-family-alibaba-medium);
+            z-index: 1000;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08); /* 阴影调整 */
+        }
+
+        .container {
+            max-width: 820px; /* 略微调整宽度 */
+            margin: 35px auto; 
+            background: var(--white);
+            padding: 30px 40px; /* 调整内边距 */
+            border-radius: 12px; /* 更圆润的边角 */
+            box-shadow: 0 10px 30px rgba(0, 47, 167, 0.07); 
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-family-alibaba-medium); 
+            color: var(--klein-blue);
+            margin-bottom: 1em; 
+            line-height: 1.4; /* 标题行高 */
+        }
+        h1 { font-size: 2.1em; text-align: center; margin-bottom: 1.3em; font-family: var(--font-family-alibaba-bold); }
+        h2 { font-size: 1.7em; border-bottom: 2px solid var(--light-blue); padding-bottom: 0.5em; margin-top: 1.8em;}
+        h3 { font-size: 1.35em; color: var(--text-dark); margin-top: 1.5em; } 
+        
+        p { margin-bottom: 1.2em; color: var(--text-medium); font-size: 1em; }
+
+        .hidden { display: none !important; }
+
+        .question-block {
+            margin-bottom: 35px; 
+            padding: 25px 30px; 
+            border: 1px solid #E0E6F1; /* 更柔和的边框 */
+            border-left: 5px solid var(--light-blue);
+            border-radius: 10px;
+            background-color: var(--white); 
+            transition: box-shadow 0.3s ease;
+        }
+        .question-block:hover {
+            box-shadow: 0 8px 16px rgba(0, 47, 167, 0.08);
+        }
+
+        .question-text {
+            font-family: var(--font-family-alibaba-medium);
+            font-size: 1.18em; 
+            color: var(--text-dark);
+            margin-bottom: 8px; /* 题目和描述之间的距离 */
+            line-height: 1.5;
+        }
+        .question-description {
+            font-family: var(--font-family-alibaba-light); /* 使用Light字体 */
+            font-size: 0.9em; /* 描述文字略小 */
+            color: var(--text-light); /* 描述文字颜色 */
+            margin-top: 0;
+            margin-bottom: 18px; /* 描述和选项之间的距离 */
+            line-height: 1.6;
+            padding-left: 5px; /* 轻微缩进 */
+            border-left: 2px solid #E8F0FE; /* 左侧淡蓝色提示线 */
+        }
+
+
+        .options label {
+            display: flex; 
+            align-items: flex-start; /* 对于多行label文字，让radio/checkbox在顶部对齐 */
+            margin-bottom: 14px;
+            cursor: pointer;
+            padding: 14px 20px; 
+            border-radius: 8px;
+            background-color: #F8FAFC; 
+            border: 1px solid #E0E6F1;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            font-size: 1em;
+        }
+        .options label:hover {
+            background-color: var(--pale-blue);
+            border-color: var(--light-blue);
+            box-shadow: 0 3px 6px rgba(0, 47, 167, 0.06);
+        }
+        .options input[type="radio"], 
+        .options input[type="checkbox"] {
+            margin-right: 15px; 
+            accent-color: var(--klein-blue);
+            transform: scale(1.1); 
+            flex-shrink: 0; 
+            margin-top: 0.15em; /* 微调垂直对齐 */
+        }
+
+        .navigation-buttons {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .navigation-buttons button {
+            padding: 13px 30px; 
+            background: linear-gradient(145deg, var(--klein-blue), var(--light-blue));
+            color: var(--white);
+            border: none;
+            border-radius: 8px; 
+            cursor: pointer;
+            font-size: 1.08em; /* 按钮文字略大 */
+            font-family: var(--font-family-alibaba-medium);
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 8px rgba(0, 47, 167, 0.15);
+        }
+        .navigation-buttons button:hover:not(:disabled) {
+            background: linear-gradient(145deg, #00268A, #3E6FD4); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 47, 167, 0.2);
+        }
+        .navigation-buttons button:disabled {
+            background: #CED6E0; 
+            color: #8A94A6;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .navigation-buttons button#prevBtn {
+            background: var(--text-light);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .navigation-buttons button#prevBtn:hover:not(:disabled) {
+            background: var(--text-medium);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .portal-page input[type="text"],
+        .portal-page input[type="email"],
+        .portal-page input[type="tel"],
+        textarea {
+            width: calc(100% - 30px); 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            border: 1px solid var(--border-color);
+            border-radius: 8px; /* 更圆润 */
+            font-size: 1em;
+            font-family: var(--font-family-alibaba);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #FBFCFE; 
+        }
+        .portal-page input:focus,
+        textarea:focus {
+            border-color: var(--klein-blue);
+            box-shadow: 0 0 0 3.5px rgba(0, 47, 167, 0.12); 
+            outline: none;
+        }
+        .portal-page label {
+            display: block;
+            margin-bottom: 8px; 
+            font-family: var(--font-family-alibaba-medium);
+            color: var(--text-medium);
+            font-size: 0.98em; /* 标签文字大小 */
+        }
+
+        textarea {
+            min-height: 120px; 
+            resize: vertical;
+        }
+        
+        .results-summary, .scoring-info {
+            margin-top: 30px;
+            padding: 28px 30px; /* 调整内边距 */
+            border: 1px solid #E0E6F1;
+            background-color: var(--white);
+            border-radius: 10px;
+            border-left: 5px solid var(--klein-blue);
+        }
+        .results-summary h3, .scoring-info h3 {
+            font-family: var(--font-family-alibaba-medium);
+            color: var(--klein-blue);
+            margin-top: 0;
+            font-size: 1.3em; 
+            margin-bottom: 0.9em;
+        }
+        .scoring-info ul { padding-left: 25px; list-style-position: outside; }
+        .scoring-info ul li { margin-bottom: 0.6em; color: var(--text-medium); }
+        .scoring-info pre {
+            background-color: #F8FAFC; /* 更淡的背景 */
+            padding: 15px 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px dashed var(--light-blue);
+            font-size: 0.9em; 
+            line-height: 1.6;
+            color: var(--text-medium);
+            font-family: Menlo, Monaco, Consolas, "Courier New", monospace; /* 等宽字体 */
+        }
+        
+        .result-category {
+            margin-bottom: 22px; 
+            padding-bottom: 18px;
+            border-bottom: 1px dashed #E0E6F1;
+        }
+        .result-category:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        .result-category strong {
+            font-family: var(--font-family-alibaba-medium);
+            color: var(--klein-blue);
+        }
+        .result-interpretation {
+            font-family: var(--font-family-alibaba-medium);
+            padding: 12px 18px; 
+            border-radius: 8px;
+            display: block; 
+            margin-top: 10px;
+            font-size: 0.98em;
+            line-height: 1.55;
+        }
+        .interpretation-good { background-color: var(--success-bg); color: var(--success-text); border: 1px solid var(--success-border);}
+        .interpretation-mild { background-color: var(--mild-bg); color: var(--mild-text); border: 1px solid var(--mild-border);}
+        .interpretation-moderate { background-color: var(--moderate-bg); color: var(--moderate-text); border: 1px solid var(--moderate-border);}
+        .interpretation-severe { background-color: var(--severe-bg); color: var(--severe-text); border: 1px solid var(--severe-border);}
+
+        #progressBarContainer {
+            width: 100%;
+            background-color: #E9ECEF; 
+            border-radius: 10px;
+            margin-bottom: 12px; 
+            overflow: hidden;
+            height: 16px; /* 调整高度 */
+        }
+        #progressBar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--light-blue), var(--klein-blue));
+            text-align: center;
+            line-height: 16px;
+            color: white;
+            font-size: 0.75em;
+            font-family: var(--font-family-alibaba-medium);
+            border-radius: 10px 0 0 10px; 
+            transition: width 0.4s ease-in-out; 
+        }
+        #progressText {
+            margin-bottom: 8px;
+            text-align: right;
+            font-size: 0.92em;
+            color: var(--text-light);
+            font-family: var(--font-family-alibaba-medium);
+        }
+        
+        .portal-page ul {
+            list-style-type: '✓  '; 
+            padding-left: 25px;
+            color: var(--text-medium);
+        }
+        .portal-page ul li {
+            margin-bottom: 0.7em;
+        }
+        .portal-page p {
+            font-size: 1.02em;
+            color: var(--text-medium);
+            line-height: 1.7;
+        }
+
+        .contact-info {
+            margin-top: 40px; 
+            padding: 25px 30px;
+            text-align: center; 
+            font-size: 1.05em; 
+            color: var(--text-dark);
+            background-color: var(--pale-blue);
+            border-radius: 10px;
+            border: 1px solid var(--light-blue);
+        }
+        .contact-info strong {
+            color: var(--klein-blue); 
+            background-color: var(--white); 
+            padding: 5px 10px; 
+            border-radius: 6px;
+            border: 1px solid var(--light-blue);
+            font-family: var(--font-family-alibaba-medium);
+        }
+        .contact-info em {
+            display: block;
+            margin-top: 18px;
+            font-size: 0.92em;
+            color: var(--text-light);
+            font-family: var(--font-family-alibaba-light);
+            line-height: 1.6;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="fixed-banner">
+    请根据您近一个月内的情况如实填写。
+</div>
+
+<div class="container">
+    <!-- Portal Page -->
+    <div id="portalPage">
+        <h1>综合心理健康评估问卷</h1>
+        <p>本问卷旨在评估您的心理健康状况，涵盖情绪、认知、行为和社交等多个方面。请根据您近一个月的真实感受回答所有问题。问卷结果仅供参考，不能替代专业心理咨询或诊断。</p>
+        
+        <h3 style="margin-top: 2.5em;">问卷规则：</h3>
+        <ul>
+            <li>请如实填写每一道题目。</li>
+            <li>所有题目均为必填项。</li>
+            <li>您的个人信息将被保密。</li>
+        </ul>
+
+        <h3 style="margin-top: 2em;">个人信息：</h3>
+        <form id="userInfoForm">
+            <div>
+                <label for="userName">名称：</label>
+                <input type="text" id="userName" name="userName" required placeholder="请输入您的昵称或姓名">
+            </div>
+            <div>
+                <label for="userEmail">邮箱：</label>
+                <input type="email" id="userEmail" name="userEmail" required placeholder="请输入您的常用邮箱">
+            </div>
+            <div>
+                <label for="userContact">联系方式：</label>
+                <input type="tel" id="userContact" name="userContact" required placeholder="请输入您的电话号码">
+            </div>
+            <div class="navigation-buttons" style="justify-content: flex-end; margin-top: 25px;">
+                <button type="button" id="startQuizBtn">开始问卷</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Questionnaire Area -->
+    <div id="quizArea" class="hidden">
+        <div id="progressText"></div>
+        <div id="progressBarContainer">
+            <div id="progressBar"></div>
+        </div>
+        <form id="quizForm">
+            <!-- Questions will be injected here by JavaScript -->
+        </form>
+        <div class="navigation-buttons">
+            <button type="button" id="prevBtn" class="hidden">上一题</button>
+            <button type="button" id="nextBtn" disabled>下一题</button>
+        </div>
+    </div>
+
+    <!-- Results Page -->
+    <div id="resultsPage" class="hidden">
+        <h2>评估结果</h2>
+        <p style="color: var(--text-medium);">感谢您的参与！以下是根据您的回答生成的初步评估结果。请记住，这不能替代专业的心理诊断。</p>
+
+        <div id="resultsSummary" class="results-summary">
+            <!-- Scores will be injected here by JavaScript in displayResults() -->
+        </div>
+        
+        <h2 style="margin-top: 2em;">评分标准参考</h2>
+
+        <div class="scoring-info">
+            <h3>第一部分：情绪状态评估</h3>
+            <p><strong>计分方式：</strong></p>
+            <ul>
+                <li>问题1-16：分值为选择的数字（1-5分）</li>
+                <li>问题17-20：分值为6减去选择的数字（反向计分）</li>
+            </ul>
+            <p><strong>评分界限：</strong></p>
+            <ul>
+                <li>20-35分：情绪状态良好</li>
+                <li>36-55分：轻度情绪困扰</li>
+                <li>56-75分：中度情绪困扰</li>
+                <li>76-100分：严重情绪困扰</li>
+            </ul>
+        </div>
+
+        <div class="scoring-info">
+            <h3>第二部分：认知与行为模式</h3>
+            <p><strong>计分方式：</strong></p>
+            <ul>
+                <li>问题21-24，30-31：分值为选择的数字（1-5分）</li>
+                <li>问题25-29，32-35：分值为6减去选择的数字（反向计分）</li>
+            </ul>
+            <p><strong>评分界限：</strong></p>
+            <ul>
+                <li>15-30分：认知模式健康</li>
+                <li>31-45分：认知模式存在轻度问题</li>
+                <li>46-60分：认知模式存在中度问题</li>
+                <li>61-75分：认知模式存在严重问题</li>
+            </ul>
+        </div>
+
+        <div class="scoring-info">
+            <h3>第三部分：社交关系与支持</h3>
+            <p><strong>计分方式：</strong>多选题，每个选项对应特定分值。</p>
+            <pre>
+- 问题36：A=0, B=+2, C=+2, D=+2, E=-2
+- 问题37：A=+2, B=-2, C=-2, D=-1, E=+2
+- 问题38：A=+2, B=+2, C=-2, D=-2, E=-2
+- 问题39：A=+2, B=+2, C=+2, D=+1, E=-2
+- 问题40：A=+2, B=-1, C=-2, D=+2, E=-2
+- 问题41：A=+2, B=-1, C=-2, D=-1, E=+2
+- 问题42：A=+2, B=-2, C=+2, D=-2, E=-1
+- 问题43：A=+2, B=-2, C=+2, D=-2, E=+2
+- 问题44：A=+2, B=-1, C=+2, D=-2, E=-2
+- 问题45：A=+2, B=-2, C=+2, D=-1, E=+2
+            </pre>
+            <p><strong>评分界限：</strong></p>
+            <ul>
+                <li>+21至+40分：社交支持系统健康</li>
+                <li>+1至+20分：社交支持系统基本健康</li>
+                <li>-20至0分：社交支持系统有待改善</li>
+                <li>-40至-21分：社交支持系统严重不足</li>
+            </ul>
+        </div>
+        
+        <div class="scoring-info">
+            <h3>第四部分：开放性问题</h3>
+            <p>开放性问题不直接计入总分，但提供了重要的定性信息，有助于更全面地理解您的状况。专业人士会根据这些回答进行评估。</p>
+        </div>
+
+         <div class="scoring-info">
+             <h3>综合心理状态评估</h3>
+             <p>综合得分是将情绪状态（40%权重）、认知行为模式（40%权重）和社交关系与支持（20%权重）的百分比得分加权平均计算得出。</p>
+            <p><strong>综合评估界限：</strong></p>
+            <ul>
+                <li>0-25%：心理健康状态良好</li>
+                <li>26-50%：心理状态基本健康</li>
+                <li>51-75%：心理状态存在中度问题</li>
+                <li>76-100%：心理状态存在严重问题</li>
+            </ul>
+        </div>
+
+        <div class="contact-info">
+            如果您想要了解更加详细的结果或进行专业咨询，<br>请通过微信或QQ联系：<strong>191 2604 9059</strong>。
+            <em>请注意，本在线问卷的自动评分仅供初步参考，并不能替代专业心理评估和诊断。如果您在评估中发现自己可能存在中度或严重的心理健康问题，强烈建议咨询专业心理医生或心理咨询师。</em>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// JavaScript for questionnaire logic
+const questions = [
+    // Part 1: 情绪状态评估 (1-20)
+    { id: "q1", part: 1, type: 'radio', text: "1. 我感到心情低落或沮丧", 
+      description: "这种感受可能表现为持续的悲伤、对日常事物失去乐趣，或者感到空虚和无望。请回想过去一个月，您是否经常被这种情绪所困扰，即使在尝试做一些开心的事情时也难以摆脱？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q2", part: 1, type: 'radio', text: "2. 我对以前喜欢的活动失去了兴趣", 
+      description: "指您是否发现自己对过去能带来愉悦感和满足感的爱好、社交活动或工作学习等不再感兴趣，甚至感到厌烦或回避。这种兴趣的减退是广泛的还是针对特定事物？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q3", part: 1, type: 'radio', text: "3. 我感到紧张或焦虑", 
+      description: "焦虑感可能伴随着不安、担忧、心慌、肌肉紧张等生理反应。请评估您在过去一个月中感受到这种紧张或为未来过度担忧的频率和强度。",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q4", part: 1, type: 'radio', text: "4. 我担心一些可能不会发生的事情", 
+      description: "这指的是您是否经常对未来可能发生的负面事件（无论大小）产生过度的、难以控制的担忧，即使这些事情发生的概率很低或者您知道担忧也无济于事。",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q5", part: 1, type: 'radio', text: "5. 我感到疲惫或没有精力", 
+      description: "这种疲惫感不仅仅是体力上的，也可能包括精神上的疲劳，感觉做什么都提不起劲，即使休息后也难以恢复。它是否影响了您的日常活动和工作效率？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q6", part: 1, type: 'radio', text: "6. 我的睡眠质量不佳（难以入睡或保持睡眠）", 
+      description: "包括入睡困难（躺下很久才能睡着）、睡眠浅易醒、早醒后难以再次入睡，或者整夜多梦导致醒后感觉没有休息好。请评估您对睡眠的整体满意度。",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q7", part: 1, type: 'radio', text: "7. 我对自己感到失望或自责", 
+      description: "这可能源于您觉得自己未达到某个标准、犯了错误，或者认为自己不够好。这种失望和自责是针对特定事件还是普遍存在于您对自己的评价中？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q8", part: 1, type: 'radio', text: "8. 我难以集中注意力", 
+      description: "例如在阅读、工作、学习或与人交谈时，您是否发现自己的思绪容易飘散，难以持续专注于当前的任务或内容，或者容易被无关事物分心？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q9", part: 1, type: 'radio', text: "9. 我感到烦躁或易怒", 
+      description: "指您是否比平时更容易因为小事而感到不耐烦、生气，或者情绪容易激动，难以控制自己的脾气。这种烦躁感是否影响了您的人际关系？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q10", part: 1, type: 'radio', text: "10. 我对未来感到绝望", 
+      description: "这是一种对未来前景感到悲观、认为情况不会好转、缺乏希望的感受。您是否觉得未来没有什么值得期待的，或者认为自己的努力是徒劳的？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q11", part: 1, type: 'radio', text: "11. 我担心自己的健康状况", 
+      description: "这种担心可能表现为对身体某些症状的过度关注，或者害怕自己患上某种严重疾病，即使医生检查后未发现明显问题，这种担忧也难以消除。",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    // (JavaScript continued from previous response)
+    { id: "q12", part: 1, type: 'radio', text: "12. 我在公共场合感到不安或紧张", 
+      description: "例如在人群中、发表演讲、参加社交聚会或与陌生人交流时，您是否会感到心跳加速、手心出汗、害怕被他人注视或评判，甚至想要逃避这些场合？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q13", part: 1, type: 'radio', text: "13. 我有身体不适感（如头痛、胃痛、胸闷等）", 
+      description: "这些不适感可能没有明确的器质性病因，但却真实地困扰着您。请评估这些与情绪相关的身体症状出现的频率和对您生活的影响程度。",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q14", part: 1, type: 'radio', text: "14. 我感到孤独或被孤立", 
+      description: "孤独感是一种主观感受，即使身边有人，也可能感到不被理解或缺乏深刻的情感连接。您是否渴望与人亲近但又觉得难以融入或被接纳？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q15", part: 1, type: 'radio', text: "15. 我的情绪波动较大", 
+      description: "指您的情绪是否像过山车一样，在短时间内经历从高涨到低落，或者从平静到愤怒等较大起伏，且这些波动可能没有明显的外部原因或反应过度。",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q16", part: 1, type: 'radio', text: "16. 我感到压力过大", 
+      description: "压力可能来自工作、学业、人际关系、经济状况或生活琐事等。请评估您在过去一个月中感受到的总体压力水平，是否觉得难以承受或应对。",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'direct' },
+    { id: "q17", part: 1, type: 'radio', text: "17. 我对生活感到满足", 
+      description: "（反向计分）这指的是您对目前生活的整体状况，包括工作、学习、人际关系、个人成长等方面的满意程度。您是否觉得生活充实、有意义，并对此心怀感激？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'reverse' },
+    { id: "q18", part: 1, type: 'radio', text: "18. 我能够享受生活中的美好时刻", 
+      description: "（反向计分）即使生活中有不如意，您是否仍能留意并体会到那些微小但美好的瞬间，如美食、音乐、与亲友相伴、大自然等，并从中获得愉悦感？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'reverse' },
+    { id: "q19", part: 1, type: 'radio', text: "19. 我对自己充满信心", 
+      description: "（反向计分）指您是否相信自己的能力、价值和判断，能够积极面对挑战，并从成功和失败中学习。这种自信是稳定的还是容易受到外界评价的影响？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'reverse' },
+    { id: "q20", part: 1, type: 'radio', text: "20. 我能够有效管理日常生活的压力", 
+      description: "（反向计分）当面对压力时，您是否能够采取积极的应对策略，如寻求支持、解决问题、调整心态等，而不是被压力压垮或采取消极逃避的方式？",
+      options: ["从不", "偶尔", "有时", "经常", "总是"], scoring: 'reverse' },
+
+    // Part 2: 认知与行为模式 (21-35)
+    { id: "q21", part: 2, type: 'radio', text: "21. 我倾向于过分关注事情的负面方面", 
+      description: "这指的是在评价一个事件或情境时，您是否更容易注意到其中的不足、潜在风险或不好的可能性，而忽略或轻视其积极的方面？例如，一个项目成功了90%，您是更关注那成功的90%还是未完成的10%？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'direct' },
+    { id: "q22", part: 2, type: 'radio', text: "22. 我经常为小事感到担忧", 
+      description: "指您是否会对一些日常生活中相对不重要或影响不大的事情产生过度的、不成比例的担忧，并且这种担忧会持续存在，难以摆脱。",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'direct' },
+    { id: "q23", part: 2, type: 'radio', text: "23. 我会反复思考过去的错误或失败", 
+      description: "这种反复思考，也称为“反刍思维”，指的是您是否会沉浸在对过去不愉快经历的回忆中，不断分析、懊悔，而难以从中走出来并关注当下。",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'direct' },
+    { id: "q24", part: 2, type: 'radio', text: "24. 我会避免面对困难或挑战性的情境", 
+      description: "当预感到某个情境可能会带来不适、压力或失败的风险时，您是倾向于主动回避，还是会尝试去面对和解决？这种回避行为是否限制了您的发展机会？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'direct' },
+    { id: "q25", part: 2, type: 'radio', text: "25. 我能够理性思考并解决问题", 
+      description: "（反向计分）当遇到问题或困境时，您是否能够保持冷静，分析问题的原因、可能的解决方案及其后果，并选择合适的方法来应对，而不是被情绪主导或束手无策？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'reverse' },
+    { id: "q26", part: 2, type: 'radio', text: "26. 我能够接受自己的缺点和局限性", 
+      description: "（反向计分）指您是否能够客观看待自己的不足之处，不因此而过分自责或否定自我价值，并在此基础上努力改进或与这些不完美和谐共处。",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'reverse' },
+    { id: "q27", part: 2, type: 'radio', text: "27. 我能够坦然面对批评或失败", 
+      description: "（反向计分）当受到他人批评或经历失败时，您是能够从中学习、调整，并继续前进，还是会感到极度沮丧、羞愧，甚至一蹶不振？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'reverse' },
+    { id: "q28", part: 2, type: 'radio', text: "28. 当遇到困难时，我会寻求支持和帮助", 
+      description: "（反向计分）这里的支持可以来自家人、朋友、同事或专业人士。您是否认为寻求帮助是解决问题的有效途径，并且愿意在需要时开口求助？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'reverse' },
+    { id: "q29", part: 2, type: 'radio', text: "29. 我感觉自己的生活有意义和目标", 
+      description: "（反向计分）指您是否觉得自己的生活有明确的方向感，知道自己为什么而活，并且正在为一些有价值的目标而努力。这种意义感和目标感是否给您带来动力？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'reverse' },
+    { id: "q30", part: 2, type: 'radio', text: "30. 我会因为事情没有按计划进行而感到沮丧", 
+      description: "当现实情况与预期不符，或计划被打乱时，您是否容易感到强烈的失落、沮丧或愤怒，并且难以适应变化、调整自己的心态和行为？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'direct' },
+    { id: "q31", part: 2, type: 'radio', text: "31. 我倾向于将问题极端化或夸大化", 
+      description: "这指的是“灾难化思维”，即把一个小问题或潜在的负面可能性想象成无法挽回的灾难性后果。例如，一次小失误就认为自己彻底失败了。",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'direct' },
+    { id: "q32", part: 2, type: 'radio', text: "32. 我会为他人的幸福感到开心", 
+      description: "（反向计分）当看到他人取得成就、经历好事或感到幸福时，您是否能够真诚地为他们感到高兴，而不是嫉妒、失落或漠不关心？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'reverse' },
+    { id: "q33", part: 2, type: 'radio', text: "33. 我对自己的判断和决策感到信任", 
+      description: "（反向计分）在做决定时，您是更倾向于相信自己的分析和直觉，还是会过度依赖他人意见，或者在决策后反复怀疑、后悔？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'reverse' },
+    { id: "q34", part: 2, type: 'radio', text: "34. 我有能力在压力下保持冷静", 
+      description: "（反向计分）当面临突发状况、高压任务或紧张氛围时，您是否能够保持头脑清醒，控制情绪，并有条不紊地处理事务？",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'reverse' },
+    { id: "q35", part: 2, type: 'radio', text: "35. 我能够从不同角度看待问题", 
+      description: "（反向计分）指您是否具备认知灵活性，在面对一个问题或情境时，能够跳出固有的思维模式，尝试从多种视角进行理解和分析，而不是固执己见。",
+      options: ["完全不符合", "较不符合", "中立", "较符合", "完全符合"], scoring: 'reverse' },
+    
+    // Part 3: 社交关系与支持 (36-45)
+    { id: "q36", part: 3, type: 'checkbox', text: "36. 在过去一个月中，当我遇到困难时，我倾向于：", 
+      description: "这里的困难可以指工作学习上的挑战、人际关系中的矛盾、个人情绪的困扰等。请思考当您面对这些情况时，最常采取的应对方式是哪几种？多种方式并存是正常的。",
+      options: [
+        { label: "A. 自己独自面对并解决", value: "A" }, 
+        { label: "B. 向家人寻求支持", value: "B" },
+        { label: "C. 向朋友寻求帮助", value: "C" },
+        { label: "D. 向专业人士（如心理咨询师）求助", value: "D" },
+        { label: "E. 回避问题，希望它自然消失", value: "E" }
+      ], scoring_map: { A:0, B:2, C:2, D:2, E:-2 } },
+    { id: "q37", part: 3, type: 'checkbox', text: "37. 在社交场合中，我通常感到：", 
+      description: "社交场合包括聚会、会议、与不熟悉的人交谈等。请选择最能描述您在这些情境下典型感受的选项，可以多选。",
+      options: [
+        { label: "A. 舒适自在", value: "A" }, 
+        { label: "B. 紧张不安", value: "B" },
+        { label: "C. 担心被评判", value: "C" },
+        { label: "D. 疲惫耗能", value: "D" },
+        { label: "E. 享受与人交流的过程", value: "E" }
+      ], scoring_map: { A:2, B:-2, C:-2, D:-1, E:2 } },
+    { id: "q38", part: 3, type: 'checkbox', text: "38. 关于我的人际关系，以下哪些描述是符合的：", 
+      description: "请思考您与家人、朋友、同事等各类人际关系的总体状况，选择与您情况相符的描述。真实反映您当前的感受和体验。",
+      options: [
+        { label: "A. 我有能够深入交流的亲密朋友", value: "A" }, 
+        { label: "B. 我感到被周围的人理解和接纳", value: "B" },
+        { label: "C. 我经常感到孤独，即使在人群中", value: "C" },
+        { label: "D. 我难以相信或依赖他人", value: "D" },
+        { label: "E. 我在人际关系中经常感到紧张或不安", value: "E" }
+      ], scoring_map: { A:2, B:2, C:-2, D:-2, E:-2 } },
+    { id: "q39", part: 3, type: 'checkbox', text: "39. 当我感到压力大时，我会：", 
+      description: "压力管理方式多种多样，请选择您在感到有压力时，通常会采用哪些方法来缓解或应对。这些方法可能包括积极的或消极的。",
+      options: [
+        { label: "A. 进行体育锻炼", value: "A" }, 
+        { label: "B. 尝试放松技巧（如冥想、深呼吸）", value: "B" },
+        { label: "C. 寻求社交支持", value: "C" },
+        { label: "D. 通过娱乐活动分散注意力", value: "D" },
+        { label: "E. 使用烟酒或其他物质来缓解压力", value: "E" }
+      ], scoring_map: { A:2, B:2, C:2, D:1, E:-2 } },
+    { id: "q40", part: 3, type: 'checkbox', text: "40. 在工作或学习环境中，我经常：", 
+      description: "请回顾您在工作或学习场所的日常体验和感受，选择最能代表您状态的选项。这些感受可能同时存在。",
+      options: [
+        { label: "A. 感到胜任并有成就感", value: "A" }, 
+        { label: "B. 担心自己的表现不够好", value: "B" },
+        { label: "C. 感到过度疲劳或倦怠", value: "C" },
+        { label: "D. 享受挑战和成长的机会", value: "D" },
+        { label: "E. 感到被忽视或不被重视", value: "E" }
+      ], scoring_map: { A:2, B:-1, C:-2, D:2, E:-2 } },
+    { id: "q41", part: 3, type: 'checkbox', text: "41. 关于情绪表达，以下哪些符合我的情况：", 
+      description: "情绪表达是指您如何向他人或以何种方式展现自己的内在感受。健康的表达有助于人际沟通和自身情绪调节。",
+      options: [
+        { label: "A. 我能够适当表达自己的情绪", value: "A" }, 
+        { label: "B. 我倾向于隐藏负面情绪", value: "B" },
+        { label: "C. 我经常感到情绪失控", value: "C" },
+        { label: "D. 我难以识别自己的情绪", value: "D" },
+        { label: "E. 我能够有效调节自己的情绪", value: "E" }
+      ], scoring_map: { A:2, B:-1, C:-2, D:-1, E:2 } },
+    { id: "q42", part: 3, type: 'checkbox', text: "42. 我通常如何看待自己：", 
+      description: "这是关于自我评价和自尊的问题。请选择那些能反映您对自身整体感觉和评价的选项。",
+      options: [
+        { label: "A. 我接受自己的优点和缺点", value: "A" }, 
+        { label: "B. 我经常与他人比较并感到自卑", value: "B" },
+        { label: "C. 我为自己的成就感到自豪", value: "C" },
+        { label: "D. 我觉得自己不够好或不值得", value: "D" },
+        { label: "E. 我对自己的评价会根据外部反馈大幅波动", value: "E" }
+      ], scoring_map: { A:2, B:-2, C:2, D:-2, E:-1 } },
+    { id: "q43", part: 3, type: 'checkbox', text: "43. 关于我的生活满意度，以下哪些是正确的：", 
+      description: "生活满意度是衡量主观幸福感的重要指标，涉及对生活各个方面的整体评价和感受。",
+      options: [
+        { label: "A. 我对自己的生活道路感到满意", value: "A" }, 
+        { label: "B. 我经常担心自己做出了错误的人生选择", value: "B" },
+        { label: "C. 我对未来充满期待", value: "C" },
+        { label: "D. 我觉得生活缺乏意义或方向", value: "D" },
+        { label: "E. 我能够平衡工作/学习和个人生活", value: "E" }
+      ], scoring_map: { A:2, B:-2, C:2, D:-2, E:2 } },
+    { id: "q44", part: 3, type: 'checkbox', text: "44. 在面对变化或不确定性时，我通常：", 
+      description: "生活充满变化，如何应对不确定性是心理韧性的体现。请选择您在这些情境下的典型反应。",
+      options: [
+        { label: "A. 能够灵活适应", value: "A" }, 
+        { label: "B. 感到焦虑或不安", value: "B" },
+        { label: "C. 尝试积极规划和准备", value: "C" },
+        { label: "D. 担心最坏的结果", value: "D" },
+        { label: "E. 拒绝接受变化", value: "E" }
+      ], scoring_map: { A:2, B:-1, C:2, D:-2, E:-2 } },
+    { id: "q45", part: 3, type: 'checkbox', text: "45. 关于我的边界设定，以下哪些是符合的：", 
+      description: "个人边界是指在人际交往中，为保护自己的时间、精力、情感和价值观而设立的无形界限。健康的边界对维护人际关系和个人福祉至关重要。",
+      options: [
+        { label: "A. 我能够在需要时说\"不\"", value: "A" }, 
+        { label: "B. 我经常牺牲自己的需求来满足他人", value: "B" },
+        { label: "C. 我清楚自己的个人界限", value: "C" },
+        { label: "D. 我在设定界限时感到内疚", value: "D" },
+        { label: "E. 我能够尊重他人的界限", value: "E" }
+      ], scoring_map: { A:2, B:-2, C:2, D:-1, E:2 } },
+
+    // Part 4: 开放性问题 (46-50)
+    { id: "q46", part: 4, type: 'textarea', text: "46. 请描述在过去一个月中，让您感到最有压力的事件或情境，以及您是如何应对的？",
+      description: "请具体描述事件的起因、经过，以及您当时的情绪和想法。重点说明您采取了哪些具体的应对措施，以及这些措施的效果如何。例如，是寻求帮助、积极解决、还是暂时回避？" },
+    { id: "q47", part: 4, type: 'textarea', text: "47. 您通常使用哪些方法来放松自己和减轻压力？这些方法的效果如何？",
+      description: "可以列举一些您常用的放松技巧或活动，比如听音乐、运动、冥想、与朋友聊天、阅读、泡澡等等。请简要评估每种方法对您缓解压力的有效程度。" },
+    { id: "q48", part: 4, type: 'textarea', text: "48. 您生活中最重要的支持来源是什么或是谁？他们如何帮助您面对困难？",
+      description: "支持来源可以是具体的人（如家人、朋友、伴侣、导师），也可以是信仰、爱好、宠物等。请说明这些支持在您遇到困难时，是如何给予您力量、安慰或实际帮助的。" },
+    { id: "q49", part: 4, type: 'textarea', text: "49. 在过去一年中，您的情绪状态有什么变化？您认为造成这些变化的原因是什么？",
+      description: "回顾过去一年，您的整体情绪是变得更积极、更消极，还是波动更大？尝试分析可能导致这些变化的生活事件、人际关系、工作学习压力或个人成长等因素。" },
+    { id: "q50", part: 4, type: 'textarea', text: "50. 如果可以改变生活中的一件事以提高您的幸福感，那会是什么？为什么？",
+      description: "这件事可以是内在的改变（如心态、习惯），也可以是外在的调整（如工作、环境、关系）。请说明这个改变对您而言为什么重要，以及您期望它如何提升您的幸福感。" }
+];
+
+const portalPage = document.getElementById('portalPage');
+const quizArea = document.getElementById('quizArea');
+const resultsPage = document.getElementById('resultsPage');
+const quizForm = document.getElementById('quizForm');
+const userInfoForm = document.getElementById('userInfoForm');
+
+const startQuizBtn = document.getElementById('startQuizBtn');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+
+const progressBar = document.getElementById('progressBar');
+const progressText = document.getElementById('progressText');
+const resultsSummaryDiv = document.getElementById('resultsSummary');
+
+
+let currentQuestionIndex = 0;
+const userAnswers = {}; 
+
+function buildQuestion(questionData, index) {
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question-block';
+    questionDiv.id = `question-${index}`;
+    
+    const questionTextEl = document.createElement('p');
+    questionTextEl.className = 'question-text';
+    questionTextEl.textContent = questionData.text;
+    questionDiv.appendChild(questionTextEl);
+
+    // Add description if it exists
+    if (questionData.description) {
+        const descriptionEl = document.createElement('p');
+        descriptionEl.className = 'question-description';
+        descriptionEl.textContent = questionData.description;
+        questionDiv.appendChild(descriptionEl);
+    }
+
+    const optionsDiv = document.createElement('div');
+    optionsDiv.className = 'options';
+
+    if (questionData.type === 'radio') {
+        questionData.options.forEach((option, i) => {
+            const label = document.createElement('label');
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = questionData.id;
+            input.value = i + 1; // Value 1-5
+            input.onchange = checkAnswered;
+            label.appendChild(input);
+            // Wrap option text in a span for better styling control if needed
+            const optionTextNode = document.createElement('span');
+            optionTextNode.textContent = ` ${option}`;
+            label.appendChild(optionTextNode);
+            optionsDiv.appendChild(label);
+        });
+    } else if (questionData.type === 'checkbox') {
+        questionData.options.forEach(option => {
+            const label = document.createElement('label');
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.name = questionData.id;
+            input.value = option.value;
+            input.onchange = checkAnswered;
+            label.appendChild(input);
+            const optionTextNode = document.createElement('span');
+            optionTextNode.textContent = ` ${option.label}`;
+            label.appendChild(optionTextNode);
+            optionsDiv.appendChild(label);
+        });
+    } else if (questionData.type === 'textarea') {
+        const textarea = document.createElement('textarea');
+        textarea.name = questionData.id;
+        textarea.placeholder = "请输入您的回答...";
+        textarea.oninput = checkAnswered; 
+        optionsDiv.appendChild(textarea);
+    }
+    questionDiv.appendChild(optionsDiv);
+    return questionDiv;
+}
+
+function updateProgressBar() {
+    const percentComplete = ((currentQuestionIndex + 1) / questions.length) * 100;
+    progressBar.style.width = percentComplete + '%';
+    progressText.textContent = `问题 ${currentQuestionIndex + 1} / ${questions.length}`;
+}
+
+
+function displayQuestion(index) {
+    quizForm.innerHTML = ''; 
+    const qData = questions[index];
+    const questionElement = buildQuestion(qData, index);
+    quizForm.appendChild(questionElement);
+
+    // Restore previous answer if exists
+    const currentQuestionId = qData.id;
+    if (userAnswers[currentQuestionId]) {
+        if (qData.type === 'radio') {
+            const inputs = questionElement.querySelectorAll(`input[name="${currentQuestionId}"]`);
+            inputs.forEach(input => {
+                if (input.value === userAnswers[currentQuestionId]) {
+                    input.checked = true;
+                }
+            });
+        } else if (qData.type === 'checkbox') {
+            const inputs = questionElement.querySelectorAll(`input[name="${currentQuestionId}"]`);
+            inputs.forEach(input => {
+                if (userAnswers[currentQuestionId].includes(input.value)) {
+                    input.checked = true;
+                }
+            });
+        } else if (qData.type === 'textarea') {
+            const textarea = questionElement.querySelector(`textarea[name="${currentQuestionId}"]`);
+            textarea.value = userAnswers[currentQuestionId];
+        }
+    }
+    checkAnswered(); 
+    updateProgressBar();
+
+    prevBtn.classList.toggle('hidden', index === 0);
+    if (index === questions.length - 1) {
+        nextBtn.textContent = '确认提交';
+    } else {
+        nextBtn.textContent = '下一题';
+    }
+     // Scroll to the top of the question block for better visibility on navigation
+    questionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function checkAnswered() {
+    const currentQuestionData = questions[currentQuestionIndex];
+    const questionElement = document.getElementById(`question-${currentQuestionIndex}`);
+    if (!questionElement) {
+        nextBtn.disabled = true;
+        return;
+    }
+
+    let answered = false;
+    if (currentQuestionData.type === 'radio') {
+        const selectedRadio = questionElement.querySelector(`input[name="${currentQuestionData.id}"]:checked`);
+        answered = !!selectedRadio;
+    } else if (currentQuestionData.type === 'checkbox') {
+        const selectedCheckboxes = questionElement.querySelectorAll(`input[name="${currentQuestionData.id}"]:checked`);
+        answered = selectedCheckboxes.length > 0;
+    } else if (currentQuestionData.type === 'textarea') {
+        const textarea = questionElement.querySelector(`textarea[name="${currentQuestionData.id}"]`);
+        answered = textarea && textarea.value.trim() !== '';
+    }
+    nextBtn.disabled = !answered;
+}
+
+function saveCurrentAnswer() {
+    const currentQuestionData = questions[currentQuestionIndex];
+    const questionElement = document.getElementById(`question-${currentQuestionIndex}`);
+    if (!questionElement) return;
+
+    const questionId = currentQuestionData.id;
+    if (currentQuestionData.type === 'radio') {
+        const selectedRadio = questionElement.querySelector(`input[name="${questionId}"]:checked`);
+        if (selectedRadio) {
+            userAnswers[questionId] = selectedRadio.value; 
+        }
+    } else if (currentQuestionData.type === 'checkbox') {
+        const selectedCheckboxes = questionElement.querySelectorAll(`input[name="${questionId}"]:checked`);
+        userAnswers[questionId] = Array.from(selectedCheckboxes).map(cb => cb.value); 
+    } else if (currentQuestionData.type === 'textarea') {
+        const textarea = questionElement.querySelector(`textarea[name="${questionId}"]`);
+        if (textarea) {
+            userAnswers[questionId] = textarea.value.trim();
+        }
+    }
+}
+
+// --- Scoring Functions ---
+function calculatePart1Score() {
+    let score = 0;
+    questions.filter(q => q.part === 1).forEach(q => {
+        const answer = parseInt(userAnswers[q.id]);
+        if (!isNaN(answer)) {
+            if (q.scoring === 'direct') {
+                score += answer;
+            } else if (q.scoring === 'reverse') {
+                score += (6 - answer);
+            }
+        }
+    });
+    return score;
+}
+
+function getPart1Interpretation(score) {
+    if (score >= 20 && score <= 35) return { text: "情绪状态良好", class: "interpretation-good" };
+    if (score >= 36 && score <= 55) return { text: "轻度情绪困扰", class: "interpretation-mild" };
+    if (score >= 56 && score <= 75) return { text: "中度情绪困扰", class: "interpretation-moderate" };
+    if (score >= 76 && score <= 100) return { text: "严重情绪困扰", class: "interpretation-severe" };
+    return { text: "分数超出范围", class: "" };
+}
+
+function calculatePart2Score() {
+    let score = 0;
+    questions.filter(q => q.part === 2).forEach(q => {
+        const answer = parseInt(userAnswers[q.id]);
+        if (!isNaN(answer)) {
+            if (q.scoring === 'direct') {
+                score += answer;
+            } else if (q.scoring === 'reverse') {
+                score += (6 - answer);
+            }
+        }
+    });
+    return score;
+}
+
+function getPart2Interpretation(score) {
+    if (score >= 15 && score <= 30) return { text: "认知模式健康", class: "interpretation-good" };
+    if (score >= 31 && score <= 45) return { text: "认知模式存在轻度问题", class: "interpretation-mild" };
+    if (score >= 46 && score <= 60) return { text: "认知模式存在中度问题", class: "interpretation-moderate" };
+    if (score >= 61 && score <= 75) return { text: "认知模式存在严重问题", class: "interpretation-severe" };
+    return { text: "分数超出范围", class: "" };
+}
+
+function calculatePart3Score() {
+    let score = 0;
+    questions.filter(q => q.part === 3).forEach(q => {
+        const selectedOptions = userAnswers[q.id]; 
+        if (selectedOptions && selectedOptions.length > 0) {
+            selectedOptions.forEach(optionValue => {
+                if (q.scoring_map && q.scoring_map.hasOwnProperty(optionValue)) {
+                    score += q.scoring_map[optionValue];
+                }
+            });
+        }
+    });
+    return score;
+}
+
+function getPart3Interpretation(score) {
+    if (score >= 21 && score <= 40) return { text: "社交支持系统健康", class: "interpretation-good" }; 
+    if (score >= 1 && score <= 20) return { text: "社交支持系统基本健康", class: "interpretation-mild" };
+    if (score >= -20 && score <= 0) return { text: "社交支持系统有待改善", class: "interpretation-moderate" };
+    if (score <= -21 ) return { text: "社交支持系统严重不足", class: "interpretation-severe" }; 
+    return { text: "分数超出范围或未评估", class: "" };
+}
+
+function calculateOverallScore(score1, score2, score3) {
+    // Normalize scores to percentages of their scorable range and ensure they are within 0-100
+    // Part 1: Range 20-100 (span of 80 points). Min score is 20.
+    const perc1Raw = ((score1 - 20) / (100 - 20)) * 100;
+    const perc1 = Math.max(0, Math.min(100, perc1Raw)); // Clamp between 0 and 100
+
+    // Part 2: Range 15-75 (span of 60 points). Min score is 15.
+    const perc2Raw = ((score2 - 15) / (75 - 15)) * 100;
+    const perc2 = Math.max(0, Math.min(100, perc2Raw)); // Clamp between 0 and 100
+
+    // Part 3: Range -40 to +40 (span of 80 points). Min score is -40.
+    const perc3Raw = ((score3 - (-40)) / (40 - (-40))) * 100;
+    const perc3 = Math.max(0, Math.min(100, perc3Raw)); // Clamp between 0 and 100
+
+    // Weighted average. Note: The interpretation of these percentages is that
+    // higher perc1 and perc2 are "worse" (more distress/problematic cognition),
+    // while higher perc3 is "better" (healthier social support).
+    // To make a consistent "overall health" score where higher is better, we need to invert perc1 and perc2.
+    // However, the prompt's overall interpretation boundaries (0-25 good, 76-100 severe) suggest
+    // that a LOWER overall score is better. So, we use perc1 and perc2 directly.
+
+    // Current interpretation of overall score: Higher score = more problematic.
+    // 0-25: Good (low distress)
+    // 76-100: Severe (high distress)
+    // For Part 3, a higher perc3 means better social support. To align it with perc1 and perc2
+    // (where higher means more problematic for the overall score), we should use (100 - perc3).
+    const adjustedPerc3 = 100 - perc3;
+
+    const overall = (perc1 * 0.4) + (perc2 * 0.4) + (adjustedPerc3 * 0.2);
+    return Math.max(0, Math.min(100, Math.round(overall))); // Ensure it's between 0 and 100
+}
+
+function getOverallInterpretation(overallPercentage) {
+    // Assuming lower score is better, as per common psychological distress scales
+    if (overallPercentage >= 0 && overallPercentage <= 25) return { text: "心理健康状态良好，具有积极的情绪体验、健康的认知模式和良好的社会支持。", class: "interpretation-good" };
+    if (overallPercentage >= 26 && overallPercentage <= 50) return { text: "心理状态基本健康，可能存在轻度心理困扰，建议关注自我调适。", class: "interpretation-mild" };
+    if (overallPercentage >= 51 && overallPercentage <= 75) return { text: "心理状态存在中度问题，建议寻求专业支持和帮助以改善状况。", class: "interpretation-moderate" };
+    if (overallPercentage >= 76 && overallPercentage <= 100) return { text: "心理状态存在严重问题，强烈建议立即寻求专业心理健康服务。", class: "interpretation-severe" };
+    return { text: "综合得分评估错误", class: "" };
+}
+
+
+function displayResults() {
+    const score1 = calculatePart1Score();
+    const interp1 = getPart1Interpretation(score1);
+
+    const score2 = calculatePart2Score();
+    const interp2 = getPart2Interpretation(score2);
+    
+    const score3 = calculatePart3Score();
+    const interp3 = getPart3Interpretation(score3);
+
+    const overallScore = calculateOverallScore(score1, score2, score3);
+    const overallInterp = getOverallInterpretation(overallScore);
+
+    resultsSummaryDiv.innerHTML = `
+        <h3>您的得分摘要：</h3>
+        <div class="result-category">
+            <strong>第一部分 (情绪状态):</strong> ${score1}分 (范围20-100, 分数越高困扰越严重). 
+            <span class="result-interpretation ${interp1.class}">${interp1.text}</span>
+        </div>
+        <div class="result-category">
+            <strong>第二部分 (认知行为):</strong> ${score2}分 (范围15-75, 分数越高问题越明显). 
+            <span class="result-interpretation ${interp2.class}">${interp2.text}</span>
+        </div>
+        <div class="result-category">
+            <strong>第三部分 (社交支持):</strong> ${score3}分 (范围-40至+40, 分数越高支持越好). 
+            <span class="result-interpretation ${interp3.class}">${interp3.text}</span>
+        </div>
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 25px 0;">
+        <div class="result-category" style="font-size: 1.1em;">
+            <strong>综合心理困扰指数:</strong> ${overallScore}% 
+            <p style="font-size:0.85em; color: var(--text-light); margin-top: 5px;">(此指数综合评估您的情绪困扰、认知模式问题及社交支持状况，0%表示最佳，100%表示最严重困扰)</p>
+            <span class="result-interpretation ${overallInterp.class}" style="display:block; margin-top:8px;">${overallInterp.text}</span>
+        </div>
+    `;
+     // Add user's open-ended answers to the results page
+    const openEndedAnswersDiv = document.createElement('div');
+    openEndedAnswersDiv.style.marginTop = '30px';
+    const openEndedHeader = document.createElement('h3');
+    openEndedHeader.textContent = '您的开放性回答摘要：';
+    openEndedHeader.style.fontFamily = 'var(--font-family-alibaba-medium)';
+    openEndedHeader.style.color = 'var(--klein-blue)';
+    openEndedHeader.style.fontSize = '1.3em';
+    openEndedAnswersDiv.appendChild(openEndedHeader);
+
+    questions.filter(q => q.part === 4).forEach(q => {
+        if (userAnswers[q.id]) {
+            const answerP = document.createElement('p');
+            answerP.style.marginBottom = '15px';
+            answerP.innerHTML = `<strong>${q.text.substring(0, q.text.indexOf('.') + 1)}</strong><br><span style="color: var(--text-medium); font-family: var(--font-family-alibaba-light); font-size: 0.95em;">${userAnswers[q.id].replace(/\n/g, '<br>')}</span>`;
+            openEndedAnswersDiv.appendChild(answerP);
+        }
+    });
+    resultsSummaryDiv.appendChild(openEndedAnswersDiv);
+}
+
+
+startQuizBtn.addEventListener('click', () => {
+    const userName = document.getElementById('userName').value.trim();
+    const userEmail = document.getElementById('userEmail').value.trim();
+    const userContact = document.getElementById('userContact').value.trim();
+
+    if (!userName || !userEmail || !userContact) {
+        alert('请填写所有个人信息后再开始问卷。');
+        return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(userEmail)) {
+        alert('请输入有效的邮箱地址。');
+        return;
+    }
+
+    userAnswers.userInfo = { name: userName, email: userEmail, contact: userContact };
+
+    portalPage.classList.add('hidden');
+    quizArea.classList.remove('hidden');
+    currentQuestionIndex = 0;
+    displayQuestion(currentQuestionIndex);
+    window.scrollTo(0, 0); // Scroll to top of quiz area
+});
+
+nextBtn.addEventListener('click', () => {
+    saveCurrentAnswer(); 
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        displayQuestion(currentQuestionIndex);
+    } else {
+        // Confirmation before submitting
+        if (confirm('您已完成所有题目，确认提交吗？')) {
+            quizArea.classList.add('hidden');
+            resultsPage.classList.remove('hidden');
+            displayResults(); 
+            console.log("Final Answers:", userAnswers); 
+            window.scrollTo(0, 0); 
+        }
+    }
+});
+
+prevBtn.addEventListener('click', () => {
+    saveCurrentAnswer(); 
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        displayQuestion(currentQuestionIndex);
+    }
+});
+
+// Initial setup
+quizArea.classList.add('hidden');
+resultsPage.classList.add('hidden');
+
+// Smooth scroll to top on page load (optional, for better UX if page reloads to middle)
+window.addEventListener('load', () => {
+    setTimeout(() => { // Timeout to ensure layout is complete
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+});
+
+</script>
+</body>
+</html>
