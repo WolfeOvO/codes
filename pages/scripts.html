@@ -273,6 +273,7 @@
 <div class="container">
     <h1>我的脚本</h1>
 
+    <!-- 1 -->
     <div class="code-card collapsed">
         <div class="card-header">
             <div class="file-info">
@@ -294,10 +295,10 @@
         <div class="card-content">
             <pre><code class="language-javascript">
 // ==UserScript==
-// @name         终极全局字体替换 (全字重+语言感知) - Merged v22 (Aggressive Latin Boost)
+// @name         终极全局字体替换 (全字重+语言感知) - Merged v24 (Icon Fix)
 // @namespace    http://tampermonkey.net/
-// @version      2025.11.21.aggressive-boost
-// @description  [视觉平衡版] 针对 Latin 字符进行“二级加粗”(+2 Levels)，彻底解决中西文混排时西文显细的问题.同时严格保持原网页 CSS 字重数值，避免排版错乱.
+// @version      2025.11.21.icon-fix
+// @description  [视觉平衡版] 针对 Latin 字符进行“二级加粗”(+2 Levels)。修复了繁体中文(TC)部分无法生效的问题。集成 v13.3 的图标/特殊符号智能避让逻辑，防止误伤图标。
 // @author       Gemini Advanced (Optimized by User Request)
 // @match        *://*/*
 // @exclude      *://super.imyaigc.com/*
@@ -316,11 +317,14 @@
         MAPLE_MONO: 'https://cdn.jsdelivr.net/npm/@alphardex/maple-font@latest/dist/MapleMono-NF-Regular.woff2'
     };
 
-    // 排除列表
+    // [MERGED] 排除列表配置 (基于 v13.3 的逻辑优化)
+    // 1. 基础标签排除：移除 input, select, textarea, button 以便它们也能享受新字体（符合 v13.3 行为）
+    // 2. 单独排除 'i' 标签，因为它是图标库(FontAwesome等)最常用的载体
     const EXCLUSIONS = {
-        TAGS: new Set(['script', 'style', 'link', 'meta', 'noscript', 'svg', 'path', 'img', 'input', 'select', 'button', 'i', 'em', 'canvas', 'video', 'audio']),
+        TAGS: new Set(['script', 'style', 'link', 'meta', 'noscript', 'svg', 'path', 'img', 'canvas', 'video', 'audio']),
         MONO_TAGS: new Set(['code', 'pre', 'kbd', 'samp', 'tt', 'var']),
-        ICON_REGEX: /icon|fa-|fa\s|glyph|emoji|symbol|octicon|material-icons|codicon|rgsb|remixicon|fui-|qe-|ico/i
+        // [MERGED] 使用 v13.3 更安全的正则，移除原版中容易误伤的 'ico' (会匹配 mexico) 等
+        ICON_REGEX: /icon|fa-|fa\s|glyph|emoji|symbol/i
     };
 
     const processed = new WeakSet();
@@ -340,7 +344,6 @@
     // 2. 字体定义与映射逻辑
     // ======================
 
-    // 浏览器标准的字重数值映射
     const WEIGHT_MAP = {
         'Thin': 100,
         'ExtraLight': 200,
@@ -352,28 +355,22 @@
         'Heavy': 900
     };
 
-    /**
-     * Latin 字符视觉补偿映射表 (激进版 +2 Levels)
-     * 左侧：网页 CSS 要求的字重
-     * 右侧：实际加载的 MiSans Latin 文件字重
-     * 逻辑：英文必须要比中文用更粗的文件，才能在视觉上看起来一样粗.
-     */
     const LATIN_FILE_MAPPING = {
-        'Thin': 'Light',          // 100 -> 用 300 的文件
-        'ExtraLight': 'Regular',  // 200 -> 用 400 的文件
-        'Light': 'Medium',        // 300 -> 用 500 的文件
-        'Regular': 'Demibold',    // [核心] 400 -> 用 600 的文件 (从 Medium 提升至 Demibold)
-        'Medium': 'Bold',         // 500 -> 用 700 的文件
-        'Demibold': 'Heavy',      // 600 -> 用 900 的文件
-        'Bold': 'Heavy',          // 700 -> 用 900 的文件 (封顶)
-        'Heavy': 'Heavy'          // 900 -> 保持 900
+        'Thin': 'Light',
+        'ExtraLight': 'Regular',
+        'Light': 'Medium',
+        'Regular': 'Demibold',
+        'Medium': 'Bold',
+        'Demibold': 'Heavy',
+        'Bold': 'Heavy',
+        'Heavy': 'Heavy'
     };
 
     // 语种变种配置
     const VARIANTS = {
         'Normal':     { suffix: '',       name: 'MiSans',        type: 'css' },
-        'TC':         { suffix: 'TC',     name: 'MiSans TC',     type: 'css' },
-        'Latin':      { suffix: 'Latin',  name: 'MiSans Latin',  type: 'woff2' }, // 启用映射
+        'TC':         { suffix: 'TC',     name: 'MiSans TC',     type: 'css', prefixes: ['MisansTC', 'MiSansTC'] },
+        'Latin':      { suffix: 'Latin',  name: 'MiSans Latin',  type: 'woff2' },
         'Arabic':     { suffix: 'Arabic', name: 'MiSans Arabic', type: 'woff2' },
         'Thai':       { suffix: 'Thai',   name: 'MiSans Thai',   type: 'woff2' },
         'Tibetan':    { suffix: 'Tibetan',name: 'MiSans Tibetan',type: 'woff2' },
@@ -389,9 +386,13 @@
     // ======================
 
     const BASE_LATIN = `"MiSans Latin"`;
-    const GLOBAL_FALLBACKS = `"MiSans Arabic", "MiSans Thai", "MiSans Tibetan", "MiSans Myanmar", "MiSans Lao", "MiSans Khmer", "MiSans Gurmukhi", "MiSans Devanagari", "MiSans TC", "MiSans", sans-serif`;
+    const TC_FALLBACKS = `"MiSans TC", "MiSansTC", "Misans TC"`;
+    const GLOBAL_FALLBACKS = `${TC_FALLBACKS}, "MiSans Arabic", "MiSans Thai", "MiSans Tibetan", "MiSans Myanmar", "MiSans Lao", "MiSans Khmer", "MiSans Gurmukhi", "MiSans Devanagari", "MiSans TC", "MiSans", sans-serif`;
 
     function buildStack(primaryFont) {
+        if (primaryFont === "MiSans TC") {
+            return `${BASE_LATIN}, ${TC_FALLBACKS}, "MiSans", ${GLOBAL_FALLBACKS}`;
+        }
         if (primaryFont === "MiSans") {
             return `${BASE_LATIN}, "MiSans", ${GLOBAL_FALLBACKS}`;
         }
@@ -424,35 +425,33 @@
             if (this.loaded) return;
             const style = document.createElement('style');
             style.id = 'nuclear-font-loader';
-            let cssContent = '/* --- MiSans v22 (Aggressive Boost) --- */\n';
+            let cssContent = '/* --- MiSans v24 (TC Robust + Icon Fix) --- */\n';
 
-            // 1. 生成字体 @font-face
             Object.keys(VARIANTS).forEach(dirName => {
                 const conf = VARIANTS[dirName];
-
                 if (conf.type === 'css') {
-                    Object.keys(WEIGHT_MAP).forEach(weightName => {
-                        const filename = conf.suffix ? `MiSans${conf.suffix}-${weightName}.min.css` : `MiSans-${weightName}.min.css`;
-                        cssContent += `@import url('${CONFIG.BASE_URL}/${dirName}/${filename}');\n`;
+                    let prefixesToTry = conf.prefixes || [conf.suffix ? `MiSans${conf.suffix}` : `MiSans`];
+                    prefixesToTry.forEach(prefix => {
+                        Object.keys(WEIGHT_MAP).forEach(weightName => {
+                            const filename = `${prefix}-${weightName}.min.css`;
+                            cssContent += `@import url('${CONFIG.BASE_URL}/${dirName}/${filename}');\n`;
+                        });
                     });
                 } else {
+                    const filePrefix = conf.suffix ? `MiSans${conf.suffix}` : `MiSans`;
                     Object.keys(WEIGHT_MAP).forEach(weightName => {
-                        const cssWeightValue = WEIGHT_MAP[weightName]; // 400, 500, 700
-                        let actualFileWeight = weightName; // Regular, Medium...
-
-                        // [核心逻辑] Latin 文件替换
+                        const cssWeightValue = WEIGHT_MAP[weightName];
+                        let actualFileWeight = weightName;
                         if (dirName === 'Latin' && LATIN_FILE_MAPPING[weightName]) {
                             actualFileWeight = LATIN_FILE_MAPPING[weightName];
                         }
-
-                        const filename = `MiSans${conf.suffix}-${actualFileWeight}.woff2`;
+                        const filename = `${filePrefix}-${actualFileWeight}.woff2`;
                         const url = `${CONFIG.BASE_URL}/${dirName}/${filename}`;
-
                         cssContent += `
 @font-face {
     font-family: '${conf.name}';
     src: url('${url}') format('woff2');
-    font-weight: ${cssWeightValue}; /* 即使加载的是Demibold文件，也告诉浏览器这是400 */
+    font-weight: ${cssWeightValue};
     font-style: normal;
     font-display: swap;
 }\n`;
@@ -460,14 +459,12 @@
                 }
             });
 
-            // 2. Maple Mono
             cssContent += `@font-face { font-family: 'Maple Mono'; src: url('${CONFIG.MAPLE_MONO}') format('woff2'); font-weight: normal; font-style: normal; font-display: swap; }\n`;
 
-            // 3. 注入变量
             cssContent += `
 :root, :host, body, html {
     --font-full-sc: ${STACKS.sc};
-    --font-full-ar: ${STACKS.ar};
+    --font-full-tc: ${STACKS.tc};
     ${CSS_VARIABLES_TO_HIJACK.map(v => `${v}: ${STACKS.sc} !important;`).join('\n    ')}
 }
 
@@ -479,16 +476,17 @@ ${Array.from(EXCLUSIONS.MONO_TAGS).join(', ')} {
             style.textContent = cssContent;
             (document.head || document.documentElement).appendChild(style);
             this.loaded = true;
-            console.log('[Font Engine] v22 Loaded. Latin Aggressively Boosted (+2 Levels).');
+            console.log('[Font Engine] v24 Loaded with Icon Protection (v13.3 logic).');
         }
     }
 
     // ======================
-    // 5. 深度语言检测 (保持不变)
+    // 5. 深度语言检测
     // ======================
     const REGEX = {
         KR: /[\uAC00-\uD7A3]/,
         JP: /[\u3040-\u309F\u30A0-\u30FF]/,
+        TC: /[\u570B\u6703\u9019\u5C0D\u7D93\u6FDF\u6230\u5340\u7522\u9AD4\u9EDE\u50B3\u5169\u806F\u6B77\u64F4\u6416\u81FA\u7063]/,
         TH: /[\u0E00-\u0E7F]/,
         AR: /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/,
         MY: /[\u1000-\u109F]/,
@@ -510,39 +508,64 @@ ${Array.from(EXCLUSIONS.MONO_TAGS).join(', ')} {
             if (REGEX.DEV.test(text)) return 'dev';
             if (REGEX.GU.test(text)) return 'gu';
             if (REGEX.TIB.test(text)) return 'tib';
+            if (REGEX.TC.test(text)) return 'tc';
         }
         const langAttr = element.closest('[lang]')?.lang?.toLowerCase();
         if (langAttr) {
             if (langAttr.includes('ar') || langAttr.includes('ur') || langAttr.includes('fa')) return 'ar';
             if (langAttr.includes('th')) return 'th';
-            if (langAttr.includes('tw') || langAttr.includes('hk')) return 'tc';
+            if (langAttr.includes('tw') || langAttr.includes('hk') || langAttr.includes('hant')) return 'tc';
         }
         return 'sc';
     }
 
+    // ======================
+    // 6. 元素处理 (集成 v13.3 的智能避让)
+    // ======================
     function processElement(el, forceUpdate = false) {
         if (processed.has(el) && !forceUpdate) return;
 
         const tag = el.tagName?.toLowerCase();
+
+        // [Check 1] 基础标签排除
         if (!tag || EXCLUSIONS.TAGS.has(tag)) {
             processed.add(el);
             return;
         }
 
-        const className = el.className;
-        if (className && typeof className === 'string' && EXCLUSIONS.ICON_REGEX.test(className)) {
+        // [Check 2] 单独处理 'i' 标签 (v13.3 逻辑)
+        // 'i' 标签常被 FontAwesome 等图标库使用，必须强制忽略
+        if (tag === 'i') {
             processed.add(el);
             return;
         }
 
-        const text = el.textContent?.trim();
-        if (text && text.length <= 2) {
-            const code = text.charCodeAt(0);
-            if ((code >= 0xE000 && code <= 0xF8FF) || (code >= 0x2600 && code <= 0x27BF) || (code >= 0x1F000)) {
+        // [Check 3] Class 智能匹配 (v13.3 逻辑)
+        // 使用更精准的正则，避免误伤
+        const className = el.className;
+        if (className && typeof className === 'string') {
+            if (EXCLUSIONS.ICON_REGEX.test(className)) {
                 processed.add(el);
                 return;
             }
         }
+
+        // [Check 4] 符号/图标检测 (v13.3 逻辑)
+        // 如果文本极短且落在特定的符号/私有区域(PUA)Unicode范围内，视为图标不替换
+        const text = el.textContent?.trim();
+        if (text && text.length <= 2) {
+            const code = text.charCodeAt(0);
+            if (
+                (code >= 0xE000 && code <= 0xF8FF) || // Private Use Area
+                (code >= 0x2600 && code <= 0x27BF) || // Misc Symbols
+                (code >= 0x1F000)                     // Emoji / Supplement
+            ) {
+                processed.add(el);
+                return;
+            }
+        }
+
+        // --- 通过检查，执行字体替换 ---
 
         let targetFontStack = null;
 
@@ -557,7 +580,6 @@ ${Array.from(EXCLUSIONS.MONO_TAGS).join(', ')} {
             const currentStyle = el.style.getPropertyValue('font-family');
             if (forceUpdate || !currentStyle.includes('MiSans Latin')) {
                  el.style.setProperty('font-family', targetFontStack, 'important');
-                 // 仅优化渲染
                  if (tag !== 'html') {
                      el.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
                      el.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
@@ -567,9 +589,6 @@ ${Array.from(EXCLUSIONS.MONO_TAGS).join(', ')} {
         processed.add(el);
     }
 
-    // ======================
-    // 6. 观察者系统
-    // ======================
     function processNode(node) {
         if (node.nodeType !== 1) return;
         processElement(node);
@@ -667,6 +686,7 @@ ${Array.from(EXCLUSIONS.MONO_TAGS).join(', ')} {
         </div>
     </div>
 
+    <!-- 2 -->
     <div class="code-card collapsed">
         <div class="card-header">
             <div class="file-info">
@@ -685,265 +705,171 @@ ${Array.from(EXCLUSIONS.MONO_TAGS).join(', ')} {
         </div>
         <div class="card-content">
             <pre><code class="language-javascript">
-              // ==UserScript==
+// ==UserScript==
 // @name         终极全局字体替换 (语言感知/JS核心/最终版) - 强制增强版
 // @namespace    http://tampermonkey.net/
 // @version      2025.11.15.lang-aware.enhanced
-// @description  具备语言感知能力，自动为简/繁/日/韩文本匹配最佳字体.JS核心，强制注入，穿透Shadow DOM，兼容所有现代网站.此版本强制禁用网站自身字体.
+// @description  具备语言感知能力，自动为简/繁/日/韩文本匹配最佳字体。JS核心，强制注入，穿透Shadow DOM，兼容所有现代网站。此版本强制禁用网站自身字体。
 // @author       Gemini Advanced (with user's guidance)
-// @match        :///*
+// @match        *://*/*
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
-(function () {
-  code;
-  Code;
-  ("use strict");
 
-  // ======================================================================
-
-  // 1. CSS部分: 定义所有语言变体的字体栈
-
-  // ======================================================================
-
-  const cssDefinition = `
-
-    /* 注入所有语言变体的网络字体 (如果本地没有) */
-
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+HK:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;400;500;700&display=swap');
-
-
-
-    @font-face {
-
-        font-family: 'Maple Mono';
-
-        src: local('Maple Mono NF'), local('Maple Mono'), url('https://cdn.jsdelivr.net/npm/@alphardex/maple-font@latest/dist/MapleMono-NF-Regular.woff2') format('woff2');
-
-        font-weight: normal; font-style: normal;
-
-    }
-
-
-
-    :host, :root {
-
-        /* 为每种语言定义独立的字体栈 */
-
-        --font-sans-sc: 'Noto Sans SC', 'Source Han Sans CN', sans-serif;
-
-        --font-sans-tc: 'Noto Sans TC', 'Source Han Sans TC', 'Noto Sans HK', sans-serif;
-
-        --font-sans-jp: 'Noto Sans JP', 'Source Han Sans JP', sans-serif;
-
-        --font-sans-kr: 'Noto Sans KR', 'Source Han Sans KR', sans-serif;
-
-
-
-        --font-serif-sc: 'Noto Serif SC', 'Source Han Serif CN', serif;
-
-        --font-serif-tc: 'Noto Serif TC', 'Source Han Serif TC', serif;
-
-        --font-serif-jp: 'Noto Serif JP', 'Source Han Serif JP', serif;
-
-        --font-serif-kr: 'Noto Serif KR', 'Source Han Serif KR', serif;
-
-
-
-        --font-mono: 'Maple Mono', 'Sarasa Gothic SC', 'Fira Code', 'Menlo', 'Consolas', monospace;
-
-    }
-
-`;
-
-  const styleElement = document.createElement("style");
-
-  styleElement.textContent = cssDefinition;
-
-  document.documentElement.appendChild(styleElement);
-
-  // ======================================================================
-
-  // 2. JavaScript部分: 语言感知与强制执行引擎 (此部分无需改动)
-
-  // ======================================================================
-
-  const processedElements = new WeakSet();
-
-  const processedRoots = new WeakSet();
-
-  // Unicode 特征检测正则表达式
-
-  const KOREAN_REGEX = /[\uAC00-\uD7A3]/; // 韩文谚文
-
-  const JAPANESE_REGEX = /[\u3040-\u309F\u30A0-\u30FF]/; // 日文平假名、片假名
-
-  /**
-
- * 检测元素的语言 (lang属性优先，字符特征备用)
-
- * @param {HTMLElement} element
-
- * @returns {'sc'|'tc'|'jp'|'kr'}
-
- */
-
-  function detectLanguage(element) {
-    // 1. 语义检测: 检查 lang 属性
-
-    const langAttr = element.closest("[lang]")?.lang.toLowerCase();
-
-    if (langAttr) {
-      if (langAttr.startsWith("zh-cn") || langAttr.startsWith("zh-sg"))
-        return "sc";
-
-      if (
-        langAttr.startsWith("zh-tw") ||
-        langAttr.startsWith("zh-hk") ||
-        langAttr.startsWith("zh-hant")
-      )
-        return "tc";
-
-      if (langAttr.startsWith("ja")) return "jp";
-
-      if (langAttr.startsWith("ko")) return "kr";
-    }
-
-    // 2. 特征检测: 分析文本内容
-
-    const text = element.textContent;
-
-    if (text) {
-      if (KOREAN_REGEX.test(text)) return "kr";
-
-      if (JAPANESE_REGEX.test(text)) return "jp";
-    }
-
-    // 3. 默认/回退: 繁体中文(更广泛)或简体中文
-
-    // 在无法明确判断时，默认使用简体中文作为基础
-
-    return "sc";
-  }
-
-  const PROTECTED_TAGS = new Set([
-    "i",
-    "em",
-    "svg",
-    "path",
-    "RGSb",
-    "button",
-    "script",
-    "style",
-    "link",
-    "meta",
-    "noscript",
-  ]);
-
-  const CODE_TAGS = new Set(["pre", "code", "kbd", "samp"]);
-
-  const HEADING_TAGS = new Set(["h1", "h2", "h3", "h4", "h5", "h6"]);
-
-  const ICON_CLASS_REGEX = /icon|fa-|fa\s|glyph|emoji|symbol|octicon/i;
-
-  function forceStyleOnElement(element) {
-    if (!element?.style || processedElements.has(element)) return;
-
-    const tagName = element.tagName.toLowerCase();
-
-    if (
-      PROTECTED_TAGS.has(tagName) ||
-      ICON_CLASS_REGEX.test(element.className)
-    ) {
-      processedElements.add(element);
-      return;
-    }
-
-    const style = getComputedStyle(element);
-
-    let targetFontFamily = null;
-
-    if (CODE_TAGS.has(tagName)) {
-      targetFontFamily = style.getPropertyValue("--font-mono").trim();
-    } else {
-      const lang = detectLanguage(element);
-
-      const isHeading = HEADING_TAGS.has(tagName);
-
-      const fontType = isHeading ? "serif" : "sans";
-
-      // 根据语言和类型，动态构建并获取对应的CSS变量
-
-      const variableName = `--font-${fontType}-${lang}`;
-
-      targetFontFamily = style.getPropertyValue(variableName).trim();
-    }
-
-    if (targetFontFamily && element.style.fontFamily !== targetFontFamily) {
-      element.style.setProperty("font-family", targetFontFamily, "important");
-    }
-
-    processedElements.add(element);
-  }
-
-  function traverseAndApply(rootNode) {
-    if (!rootNode || processedRoots.has(rootNode)) return;
-
-    if (rootNode instanceof ShadowRoot) {
-      const style = document.createElement("style");
-
-      style.textContent = cssDefinition;
-
-      rootNode.appendChild(style);
-    }
-
-    processedRoots.add(rootNode);
-
-    rootNode.querySelectorAll("*").forEach((el) => {
-      forceStyleOnElement(el);
-
-      if (el.shadowRoot) {
-        traverseAndApply(el.shadowRoot);
-      }
-    });
-  }
-
-  // ======================================================================
-
-  // 3. 执行与监听 (此部分无需改动)
-
-  // ======================================================================
-
-  const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      for (const node of mutation.addedNodes) {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          traverseAndApply(node);
+(function() {
+    'use strict';
+
+    // ======================================================================
+    // 1. CSS部分: 定义所有语言变体的字体栈
+    // ======================================================================
+    const cssDefinition = `
+        /* 注入所有语言变体的网络字体 (如果本地没有) */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+HK:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;400;500;700&display=swap');
+
+        @font-face {
+            font-family: 'Maple Mono';
+            src: local('Maple Mono NF'), local('Maple Mono'), url('https://cdn.jsdelivr.net/npm/@alphardex/maple-font@latest/dist/MapleMono-NF-Regular.woff2') format('woff2');
+            font-weight: normal; font-style: normal;
         }
-      }
+
+        :host, :root {
+            /* 为每种语言定义独立的字体栈 */
+            --font-sans-sc: 'Noto Sans SC', 'Source Han Sans CN', sans-serif;
+            --font-sans-tc: 'Noto Sans TC', 'Source Han Sans TC', 'Noto Sans HK', sans-serif;
+            --font-sans-jp: 'Noto Sans JP', 'Source Han Sans JP', sans-serif;
+            --font-sans-kr: 'Noto Sans KR', 'Source Han Sans KR', sans-serif;
+
+            --font-serif-sc: 'Noto Serif SC', 'Source Han Serif CN', serif;
+            --font-serif-tc: 'Noto Serif TC', 'Source Han Serif TC', serif;
+            --font-serif-jp: 'Noto Serif JP', 'Source Han Serif JP', serif;
+            --font-serif-kr: 'Noto Serif KR', 'Source Han Serif KR', serif;
+
+            --font-mono: 'Maple Mono', 'Sarasa Gothic SC', 'Fira Code', 'Menlo', 'Consolas', monospace;
+        }
+    `;
+    const styleElement = document.createElement('style');
+    styleElement.textContent = cssDefinition;
+    document.documentElement.appendChild(styleElement);
+
+
+    // ======================================================================
+    // 2. JavaScript部分: 语言感知与强制执行引擎 (此部分无需改动)
+    // ======================================================================
+
+    const processedElements = new WeakSet();
+    const processedRoots = new WeakSet();
+
+    // Unicode 特征检测正则表达式
+    const KOREAN_REGEX = /[\uAC00-\uD7A3]/; // 韩文谚文
+    const JAPANESE_REGEX = /[\u3040-\u309F\u30A0-\u30FF]/; // 日文平假名、片假名
+
+    /**
+     * 检测元素的语言 (lang属性优先，字符特征备用)
+     * @param {HTMLElement} element
+     * @returns {'sc'|'tc'|'jp'|'kr'}
+     */
+    function detectLanguage(element) {
+        // 1. 语义检测: 检查 lang 属性
+        const langAttr = element.closest('[lang]')?.lang.toLowerCase();
+        if (langAttr) {
+            if (langAttr.startsWith('zh-cn') || langAttr.startsWith('zh-sg')) return 'sc';
+            if (langAttr.startsWith('zh-tw') || langAttr.startsWith('zh-hk') || langAttr.startsWith('zh-hant')) return 'tc';
+            if (langAttr.startsWith('ja')) return 'jp';
+            if (langAttr.startsWith('ko')) return 'kr';
+        }
+        // 2. 特征检测: 分析文本内容
+        const text = element.textContent;
+        if (text) {
+            if (KOREAN_REGEX.test(text)) return 'kr';
+            if (JAPANESE_REGEX.test(text)) return 'jp';
+        }
+        // 3. 默认/回退: 繁体中文(更广泛)或简体中文
+        // 在无法明确判断时，默认使用简体中文作为基础
+        return 'sc';
     }
-  });
 
-  observer.observe(document.documentElement, {
-    childList: true,
+    const PROTECTED_TAGS = new Set(['i', 'em', 'svg', 'path', 'RGSb', 'button', 'script', 'style', 'link', 'meta', 'noscript']);
+    const CODE_TAGS = new Set(['pre', 'code', 'kbd', 'samp']);
+    const HEADING_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
+    const ICON_CLASS_REGEX = /icon|fa-|fa\s|glyph|emoji|symbol|octicon/i;
 
-    subtree: true,
-  });
+    function forceStyleOnElement(element) {
+        if (!element?.style || processedElements.has(element)) return;
 
-  // 初始执行，确保页面加载时静态内容被处理
+        const tagName = element.tagName.toLowerCase();
+        if (PROTECTED_TAGS.has(tagName) || ICON_CLASS_REGEX.test(element.className)) {
+             processedElements.add(element); return;
+        }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () =>
-      traverseAndApply(document.body)
-    );
-  } else {
-    traverseAndApply(document.body);
-  }
+        const style = getComputedStyle(element);
+        let targetFontFamily = null;
+
+        if (CODE_TAGS.has(tagName)) {
+            targetFontFamily = style.getPropertyValue('--font-mono').trim();
+        } else {
+            const lang = detectLanguage(element);
+            const isHeading = HEADING_TAGS.has(tagName);
+            const fontType = isHeading ? 'serif' : 'sans';
+
+            // 根据语言和类型，动态构建并获取对应的CSS变量
+            const variableName = `--font-${fontType}-${lang}`;
+            targetFontFamily = style.getPropertyValue(variableName).trim();
+        }
+
+        if (targetFontFamily && element.style.fontFamily !== targetFontFamily) {
+            element.style.setProperty('font-family', targetFontFamily, 'important');
+        }
+        processedElements.add(element);
+    }
+
+    function traverseAndApply(rootNode) {
+        if (!rootNode || processedRoots.has(rootNode)) return;
+        if (rootNode instanceof ShadowRoot) {
+            const style = document.createElement('style');
+            style.textContent = cssDefinition;
+            rootNode.appendChild(style);
+        }
+        processedRoots.add(rootNode);
+
+        rootNode.querySelectorAll('*').forEach(el => {
+            forceStyleOnElement(el);
+            if (el.shadowRoot) {
+                traverseAndApply(el.shadowRoot);
+            }
+        });
+    }
+
+    // ======================================================================
+    // 3. 执行与监听 (此部分无需改动)
+    // ======================================================================
+    const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    traverseAndApply(node);
+                }
+            }
+        }
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    // 初始执行，确保页面加载时静态内容被处理
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => traverseAndApply(document.body));
+    } else {
+        traverseAndApply(document.body);
+    }
+
 })();
             </code></pre>
         </div>
     </div>
 
+    <!-- 3 -->
     <div class="code-card collapsed">
         <div class="card-header">
             <div class="file-info">
