@@ -1,5 +1,5 @@
 # 代码作品集
-[倒计时](pages/countdown.html)
+[倒计时小组件](pages/countdown.html)
 
 [IMYAI维护提示页](pages/imyai.html)
 
